@@ -127,7 +127,7 @@ imageReader.setOnImageAvailableListener(
 
 ##
 
-## Windows install
+## Install on Windows
 
 
 #### MinGW64 install

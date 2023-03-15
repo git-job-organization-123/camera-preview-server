@@ -144,6 +144,40 @@ Add to PATH:
 
 ##
 
+#### GLEW install
+
+Download Binaries Windows 32-bit and 64-bit:
+
+https://glew.sourceforge.net/index.html
+
+Extract it somewhere
+
+Copy bin Release x64
+
+`C:\Users\<user>\Downloads\glew-2.1.0-win32\glew-2.1.0\bin\Release\x64`
+
+to
+
+`C:\mingw64\bin`
+
+Copy lib Release x64
+
+`C:\Users\<user>\Downloads\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64`
+
+to
+
+`C:\mingw64\lib`
+
+Copy include GL folder
+
+`C:\Users\<user>\Downloads\glew-2.1.0-win32\glew-2.1.0\include`
+
+to
+
+`C:\mingw64\include`
+
+##
+
 #### GLFW install
 
 Download 64-bit Windows binaries:

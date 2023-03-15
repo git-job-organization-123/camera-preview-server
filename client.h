@@ -6,5 +6,4 @@ struct Client {
   std::thread* thread = nullptr;
   std::string connectingIP;
   std::string IP;
-  SOCKET socket;
 };

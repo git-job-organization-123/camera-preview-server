@@ -249,7 +249,7 @@ void wait_for_client_connections(SOCKET server_socket) {
       clientNum = used_client_IP_index;
       clients[clientNum].free = true;
 
-      close_socket(clients[clientNum].socket); // Kick
+      close_socket(client_socket); // Kick
     }
 
     // Find free screen slot for the client
@@ -266,7 +266,6 @@ void wait_for_client_connections(SOCKET server_socket) {
     clients[clientNum].thread = new std::thread(listen_client_socket, &clients[clientNum], &client_socket);
     clients[clientNum].free = false;
     clients[clientNum].IP = IP;
-    clients[clientNum].socket = client_socket;
 
     ++activeClients;
   }

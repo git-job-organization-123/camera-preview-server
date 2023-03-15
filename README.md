@@ -29,7 +29,7 @@ First, send message that contains image properties separated by space,
 
 then send messages of YUV_420_888 image data as byte[]
 
-First message must contain image properties in this order:
+First message must contain image properties separated by space in this order:
 1. Image width
 2. Image height
 3. Y plane size

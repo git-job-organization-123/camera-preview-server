@@ -207,13 +207,6 @@ SOCKET wait_for_client_connection(const SOCKET &server_socket) {
   // Print the client's IP address
   std::cout << "Connection made from IP address: " << IP_str << std::endl;
 
-  if (activeClients < 0) {
-    activeClients = 0;
-  }
-  else if (activeClients > 1) {
-    activeClients = 1;
-  }
-
   clients[activeClients].connectingIP = IP_str;
 
   return client_socket;

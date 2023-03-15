@@ -1,6 +1,6 @@
-# camera-preview-server
+# Camera preview server
 
-### Two client server that reads stream of YUV_420_888 images. 
+#### Two client server that reads stream of YUV_420_888 images. 
 
 Example: security camera or video.
 

@@ -110,13 +110,13 @@ imageReader.setOnImageAvailableListener(
 
         ...
 
-        Get combined YUV_420_888 image data as byte[]
+        // Get combined YUV_420_888 image data as byte[]
         byte[] yuv = new byte[ySize + uSize + vSize];
         yBuffer.get(yuv, 0, ySize);
         uBuffer.get(yuv, ySize, uSize);
         vBuffer.get(yuv, ySize + uSize, vSize);
 
-        Send combined YUV_420_888 image data to server
+        // Send combined YUV_420_888 image data to server
         serverSocket.getOutputStream().write(yuv);
         serverSocket.getOutputStream().flush();
 

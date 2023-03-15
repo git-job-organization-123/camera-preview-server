@@ -127,12 +127,6 @@ imageReader.setOnImageAvailableListener(
 
 ##
 
-#### How to compile:
-
-`g++ server.cpp -lws2_32 -lGLEW32 -lglfw3 -lgdi32 -lopengl32 -o server`
-
-##
-
 ## Windows install
 
 
@@ -144,13 +138,15 @@ https://winlibs.com/
 
 Extract it to C:/
 
-Add to PATH: "C:\mingw64\bin"
+Add to PATH:
+
+`C:\mingw64\bin`
 
 ##
 
 #### GLFW install
 
-Download 64-bit Windows binaries
+Download 64-bit Windows binaries:
 
 https://www.glfw.org/download.html
 

@@ -102,7 +102,7 @@ void get_image_properties(char imageProperties[64], int &width, int &height, int
 // Listen image data
 // First message: image properties
 // Other messages: image data as byte[]
-void listen_client_socket(Client *client, SOCKET *client_socket) {
+void listen_client_socket(Client *client, SOCKET client_socket) {
   int width;
   int height;
 
@@ -126,7 +126,7 @@ void listen_client_socket(Client *client, SOCKET *client_socket) {
       char imageProperties[64];
 
       // Get image properties as char array from socket
-      recv(*client_socket, imageProperties, 64, 0);
+      recv(client_socket, imageProperties, 64, 0);
 
       // Get image properties
       get_image_properties(imageProperties, width, height, y_pixel_stride, y_row_stride, uv_pixel_stride, uv_row_stride, y_size, uv_size, yuv_size, stopThread);
@@ -158,7 +158,7 @@ void listen_client_socket(Client *client, SOCKET *client_socket) {
     // Get complete YUV_420_888 image data
     while (yuv_bytes_received < yuv_size) {
       // Get part of YUV_420_888 image data from socket
-      int result = recv(*client_socket, yuv + yuv_bytes_received, yuv_size - yuv_bytes_received, 0);
+      int result = recv(client_socket, yuv + yuv_bytes_received, yuv_size - yuv_bytes_received, 0);
 
       // Check if client closes connection
       if (result == 0 || result == -1) {
@@ -166,7 +166,7 @@ void listen_client_socket(Client *client, SOCKET *client_socket) {
         client->free = true; // Add free screen place for clients
         free(yuv); // Fix memory leak
         --activeClients;
-        close_socket(*client_socket);
+        close_socket(client_socket);
         return;
       }
 
@@ -256,7 +256,7 @@ void wait_for_client_connections(SOCKET server_socket) {
     }
 
     // Listen incoming camera preview image data
-    clients[clientNum].thread = new std::thread(listen_client_socket, &clients[clientNum], &client_socket);
+    clients[clientNum].thread = new std::thread(listen_client_socket, &clients[clientNum], client_socket);
     clients[clientNum].free = false;
     clients[clientNum].IP = IP;
 

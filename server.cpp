@@ -121,11 +121,14 @@ void listen_client_socket(Client *client, SOCKET *client_socket) {
 
   // Keep the connection open until the client closes it
   while (true) {
-    // Get Y and UV sizes on first message
+    // Get image properties from first message
     if (!firstMessage) {
-      // Get image properties from first message
       char imageProperties[64];
+
+      // Get image properties as char array from socket
       recv(*client_socket, imageProperties, 64, 0);
+
+      // Get image properties
       get_image_properties(imageProperties, width, height, y_pixel_stride, y_row_stride, uv_pixel_stride, uv_row_stride, y_size, uv_size, yuv_size, stopThread);
 
       if (stopThread) {
@@ -154,7 +157,7 @@ void listen_client_socket(Client *client, SOCKET *client_socket) {
 
     // Get complete YUV_420_888 image data
     while (yuv_bytes_received < yuv_size) {
-      // Get YUV_420_888 image data from socket
+      // Get part of YUV_420_888 image data from socket
       int result = recv(*client_socket, yuv + yuv_bytes_received, yuv_size - yuv_bytes_received, 0);
 
       // Check if client closes connection
@@ -170,11 +173,13 @@ void listen_client_socket(Client *client, SOCKET *client_socket) {
       yuv_bytes_received += result;
     }
 
+    // Check if client has texture
     if (client->texture == nullptr) {
       // Create the texture
       client->texture = new unsigned char[width * height * 3];
     }
 
+    // Get Y, U and V channel
     char* y = yuv;
     char* u = yuv + y_size;
     char* v = u + uv_size;
@@ -199,7 +204,7 @@ SOCKET wait_for_client_connection(const SOCKET &server_socket) {
   char* IP = inet_ntoa(client_address.sin_addr);
   std::string IP_str(IP);
 
-  // Print the client's IP address on the server side
+  // Print the client's IP address
   std::cout << "Connection made from IP address: " << IP_str << std::endl;
 
   if (activeClients < 0) {
@@ -237,6 +242,7 @@ void wait_for_client_connections(SOCKET server_socket) {
 
     int used_client_IP_index = get_client_index_by_IP(IP);
 
+    // Check if client exist
     if (used_client_IP_index != -1) {
       std::cout << IP << " already exists" << std::endl;
 
@@ -256,7 +262,7 @@ void wait_for_client_connections(SOCKET server_socket) {
       continue;
     }
 
-    // Listen incoming camera preview image data and draw it to window
+    // Listen incoming camera preview image data
     clients[clientNum].thread = new std::thread(listen_client_socket, &clients[clientNum], &client_socket);
     clients[clientNum].free = false;
     clients[clientNum].IP = IP;
@@ -267,7 +273,7 @@ void wait_for_client_connections(SOCKET server_socket) {
 }
 
 int main() {
-  // Initialize Winsock
+  // Initialize Winsock (Firewall check)
   WSADATA wsa_data;
   WSAStartup(MAKEWORD(2, 2), &wsa_data);
 
@@ -305,16 +311,19 @@ int main() {
         x += 1.0f;
       }
 
+      // Swap OpenGL buffers
       glfwSwapBuffers(window);
       glfwPollEvents();
     }
   }
 
+  // Close server socket
   close_socket(server_socket);
 
   // Clean up Winsock
   WSACleanup();
 
+  // Close OpenGL context
   glfwTerminate();
 
   return 0;

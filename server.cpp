@@ -85,15 +85,11 @@ void get_image_properties(char imageProperties[64], int &width, int &height, int
       uv_row_stride = std::stoi(tokens[6]); // UV plane row stride
       uv_pixel_stride = std::stoi(tokens[7]); // UV plane pixel stride
     } catch (const std::exception& e) {
-      std::cout << "Invalid first message: " << imageProperties << std::endl;
       invalid = true;
-      return;
     }
   }
   else {
-    std::cout << "Invalid first message: " << imageProperties << std::endl;
     invalid = true;
-    return;
   }
 
   yuv_size = y_size + uv_size * 2;
@@ -119,7 +115,7 @@ void listen_client_socket(Client *client, SOCKET client_socket) {
 
   bool stopThread = false;
 
-  // Keep the connection open until the client closes it
+  // Listen incoming messages
   while (true) {
     // Get image properties from first message
     if (!firstMessage) {
@@ -132,6 +128,7 @@ void listen_client_socket(Client *client, SOCKET client_socket) {
       get_image_properties(imageProperties, width, height, y_pixel_stride, y_row_stride, uv_pixel_stride, uv_row_stride, y_size, uv_size, yuv_size, stopThread);
 
       if (stopThread) {
+        std::cout << "Invalid first message: " << imageProperties << std::endl;
         std::cout << "Stopping thread: " << client->connectingIP << std::endl;
         client->free = true; // Add free screen place for clients
         --activeClients;

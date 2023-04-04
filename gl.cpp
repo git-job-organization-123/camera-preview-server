@@ -123,10 +123,10 @@ const GLushort textureIndices[] = {
 };
 
 const GLfloat textureVertices[] = {
-  0.5f, 0.5f, -0.5f, 0.0f, 0.0f,
-  0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
-  -0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
-  -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
+   0.5f,  0.5f, 0.0f, 0.0f,
+   0.5f, -0.5f, 1.0f, 0.0f,
+  -0.5f, -0.5f, 1.0f, 1.0f,
+  -0.5f,  0.5f, 0.0f, 1.0f,
 };
 
 bool setupGLProgram() {
@@ -150,7 +150,7 @@ bool setupGLProgram() {
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(textureIndices), textureIndices, GL_STATIC_DRAW);
 
   // Update the texture coordinate attribute array
-  glVertexAttribPointer(gvTexCoordHandle, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), textureVertices + 3);
+  glVertexAttribPointer(gvTexCoordHandle, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), textureVertices + 2);
 
   // Enable attribute array for texture coordinates
   glEnableVertexAttribArray(gvTexCoordHandle);
@@ -182,17 +182,19 @@ bool setupGLProgram() {
   return true;
 }
 
+const size_t textureVerticesSize = 4 * sizeof(GLfloat);
+
 void drawTexture(unsigned char *rgb, float x, float y, int width, int height) {
   // Texture vertices moved by X and Y
   const GLfloat vertices[] = {
-    x, y + 1.0f, -0.5f, 0.0f, 0.0f,
-    x, y - 1.0f, -0.5f, 1.0f, 0.0f,
-    x - 1.0f, y - 1.0f, -0.5f, 1.0f, 1.0f,
-    x - 1.0f, y + 1.0f, -0.5f, 0.0f, 1.0f,
+    x,        y + 1.0f, 0.0f, 0.0f,
+    x,        y - 1.0f, 1.0f, 0.0f,
+    x - 1.0f, y - 1.0f, 1.0f, 1.0f,
+    x - 1.0f, y + 1.0f, 0.0f, 1.0f,
   };
 
   // Update the vertex attribute array
-  glVertexAttribPointer(gvPositionHandle, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), vertices);
+  glVertexAttribPointer(gvPositionHandle, 2, GL_FLOAT, GL_FALSE, textureVerticesSize, vertices);
   
   // Draw texture
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, rgb);
